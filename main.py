@@ -24,15 +24,21 @@ def check_subscription(user_id):
 
 
 def show_main_menu(chat_id):
-  markup = types.InlineKeyboardMarkup()
+  markup = types.InlineKeyboardMarkup(row_width=1)
   btn_download = types.InlineKeyboardButton(
       "📥 تحميل فيديو", callback_data="download_menu"
+  )
+  btn_turkish = types.InlineKeyboardButton(
+      "🎬 المسلسلات التركية", callback_data="turkish_series"
+  )
+  btn_money = types.InlineKeyboardButton(
+      "💳 كسب المال بدون بطاقة هوية", callback_data="make_money"
   )
   btn_invite = types.InlineKeyboardButton(
       "🔗 دعوة أصدقاء", callback_data="menu_invite"
   )
-  markup.add(btn_download)
-  markup.add(btn_invite)
+
+  markup.add(btn_download, btn_turkish, btn_money, btn_invite)
 
   bot.send_message(
       chat_id, "أهلاً بك في القائمة الرئيسية لبوت Ayoub Hub:", reply_markup=markup
@@ -57,6 +63,39 @@ def callback_handler(call):
       bot.delete_message(call.message.chat.id, call.message.message_id)
     except:
       pass
+
+  elif call.data == "turkish_series":
+    markup = types.InlineKeyboardMarkup()
+    markup.add(
+        types.InlineKeyboardButton(
+            "🔙 القائمة الرئيسية", callback_data="main_menu"
+        )
+    )
+    text = "🎬 **قسم المسلسلات التركية:**\n\nقريباً سيتم إضافة أحدث المسلسلات والحلقات بجودات عالية جداً تابعنا."
+    bot.edit_message_text(
+        text,
+        call.message.chat.id,
+        call.message.message_id,
+        reply_markup=markup,
+        parse_mode="Markdown",
+    )
+
+  elif call.data == "make_money":
+    markup = types.InlineKeyboardMarkup()
+    markup.add(
+        types.InlineKeyboardButton(
+            "🔙 القائمة الرئيسية", callback_data="main_menu"
+        )
+    )
+    text = "💳 **قسم كسب المال بدون بطاقة هوية:**\n\nهنا تجد أفضل الطرق الفعالة لربح المال وتحويل الأرباح بسهولة بدون الحاجة لبطاقة بنكية."
+    bot.edit_message_text(
+        text,
+        call.message.chat.id,
+        call.message.message_id,
+        reply_markup=markup,
+        parse_mode="Markdown",
+    )
+
   elif call.data == "menu_invite":
     user_id = call.from_user.id
     bot_info = bot.get_me()
