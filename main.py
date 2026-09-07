@@ -3,9 +3,13 @@ import sqlite3
 import telebot
 from telebot import types
 
-# التوكن الجديد والنظيف مدمج هنا مباشرة لضمان العمل 100% وبدون أخطاء
-TOKEN = "8794061789:AAGK25uSLWeIOz5dFaYhu2ZG0LWZXLn0vbw".strip()
-bot = telebot.TeleBot(TOKEN)
+# قراءة التوكن مباشرة من متغيرات البيئة في Railway (BOT_TOKEN)
+TOKEN = os.getenv("BOT_TOKEN")
+
+if not TOKEN:
+  raise ValueError("❌ خطأ: لم يتم العثور على متغير البيئة BOT_TOKEN في Railway!")
+
+bot = telebot.TeleBot(TOKEN.strip())
 
 conn = sqlite3.connect("users.db", check_same_thread=False)
 cursor = conn.cursor()
@@ -22,7 +26,7 @@ conn.commit()
 
 def show_main_menu(chat_id, message_id=None):
   text = (
-      "🌟 *مـرحـبـاً بـك فـي عـالـم Ayoub Hub الـخـارق* 🌟\n\n"
+      "🌟 *مـرحـبـاً بـك فـي عـالـم Ayoub Cash Bot الـخـارق* 🌟\n\n"
       "┏━━━━ 🎯 *الـقـائـمـة الـرئـيـسـيـة* ━━━━┓\n"
       "┃ الإمبراطورية الرقمية بين يديك الآن..\n"
       "┗━━━━━━━━━━━━━━━━━━━━━━┛\n\n"
