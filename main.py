@@ -6,6 +6,7 @@ from telebot import types
 TOKEN = "8794061789:AAGKAt9yxIdTIH-YL1IyCXbp3fX_ZplrBz4"
 bot = telebot.TeleBot(TOKEN)
 
+# الاتصال بقاعدة البيانات
 conn = sqlite3.connect("users.db", check_same_thread=False)
 cursor = conn.cursor()
 
@@ -23,8 +24,18 @@ def check_subscription(user_id):
   return True
 
 
-def show_main_menu(chat_id):
-  markup = types.InlineKeyboardMarkup(row_width=1)
+def show_main_menu(chat_id, message_id=None):
+  # تصميم الواجهة الأسطورية الفخمة
+  text = (
+      "🌟 *مـرحـبـاً بـك فـي عـالـم Ayoub Hub* 🌟\n\n"
+      "┏━━━━ 🎯 *الـقـائـمـة الـرئـيـسـيـة* ━━━━┓\n"
+      "┃ الإمبراطورية المتكاملة بين يديك الآن..\n"
+      "┗━━━━━━━━━━━━━━━━━━━━━━┛\n\n"
+      "⚡ *اختر القسم الذي ترغب بالبدء فيه من الأزرار أدناه:*"
+  )
+
+  # تصميم شبكي فخم للأزرار (كل زرين في صف لترتيب بصري مذهل)
+  markup = types.InlineKeyboardMarkup(row_width=2)
   btn_download = types.InlineKeyboardButton(
       "📥 تحميل فيديو", callback_data="download_menu"
   )
@@ -32,17 +43,29 @@ def show_main_menu(chat_id):
       "🎬 المسلسلات التركية", callback_data="turkish_series"
   )
   btn_money = types.InlineKeyboardButton(
-      "💳 كسب المال بدون بطاقة هوية", callback_data="make_money"
+      "💳 كسب المال الذكي", callback_data="make_money"
   )
   btn_invite = types.InlineKeyboardButton(
-      "🔗 دعوة أصدقاء", callback_data="menu_invite"
+      "🔗 دعوة الأصدقاء", callback_data="menu_invite"
   )
 
   markup.add(btn_download, btn_turkish, btn_money, btn_invite)
 
-  bot.send_message(
-      chat_id, "أهلاً بك في القائمة الرئيسية لبوت Ayoub Hub:", reply_markup=markup
-  )
+  if message_id:
+    try:
+      bot.edit_message_text(
+          text,
+          chat_id,
+          message_id,
+          reply_markup=markup,
+          parse_mode="Markdown",
+      )
+    except:
+      bot.send_message(
+          chat_id, text, reply_markup=markup, parse_mode="Markdown"
+      )
+  else:
+    bot.send_message(chat_id, text, reply_markup=markup, parse_mode="Markdown")
 
 
 @bot.message_handler(commands=["start"])
@@ -58,11 +81,26 @@ def send_welcome(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_handler(call):
   if call.data == "main_menu":
-    show_main_menu(call.message.chat.id)
-    try:
-      bot.delete_message(call.message.chat.id, call.message.message_id)
-    except:
-      pass
+    show_main_menu(call.message.chat.id, call.message.message_id)
+
+  elif call.data == "download_menu":
+    markup = types.InlineKeyboardMarkup()
+    markup.add(
+        types.InlineKeyboardButton(
+            "🔙 القائمة الرئيسية", callback_data="main_menu"
+        )
+    )
+    text = (
+        "📥 *قـسـم تـحـمـيـل الـفـيـديـوهـات*\n\n"
+        " أرسل أي رابط فيديو (من يوتيوب أو المنصات الأخرى) وسأقوم بتحميله لك فوراً بجودة عالية وسرعة خيالية! 🚀"
+    )
+    bot.edit_message_text(
+        text,
+        call.message.chat.id,
+        call.message.message_id,
+        reply_markup=markup,
+        parse_mode="Markdown",
+    )
 
   elif call.data == "turkish_series":
     markup = types.InlineKeyboardMarkup()
@@ -71,7 +109,11 @@ def callback_handler(call):
             "🔙 القائمة الرئيسية", callback_data="main_menu"
         )
     )
-    text = "🎬 **قسم المسلسلات التركية:**\n\nقريباً سيتم إضافة أحدث المسلسلات والحلقات بجودات عالية جداً تابعنا."
+    text = (
+        "🎬 *قـسـم الـمـسـلـسـلات الـتـركـيـة*\n\n"
+        "🔥 استمتع بمشاهدة أحدث الحلقات والمسلسلات الحصرية بجودات خارقة.\n"
+        "📌 *ترقبوا الإطلاقات الكبرى قريباً جداً!*"
+    )
     bot.edit_message_text(
         text,
         call.message.chat.id,
@@ -87,7 +129,10 @@ def callback_handler(call):
             "🔙 القائمة الرئيسية", callback_data="main_menu"
         )
     )
-    text = "💳 **قسم كسب المال بدون بطاقة هوية:**\n\nهنا تجد أفضل الطرق الفعالة لربح المال وتحويل الأرباح بسهولة بدون الحاجة لبطاقة بنكية."
+    text = (
+        "💳 *قـسـم كـسـب الـمـال بـدون بـطـاقـة هـويـة*\n\n"
+        "💡 اكتشف الطرق الذكية والآمنة لبناء دخلك الرقمي وسحب أرباحك بكل سهولة وبدون تعقيد البنوك."
+    )
     bot.edit_message_text(
         text,
         call.message.chat.id,
@@ -108,7 +153,12 @@ def callback_handler(call):
         )
     )
 
-    text = f"**مرحباً بك في قسم دعوة الأصدقاء!**\n\nرابط الدعوة الخاص بك:\n`{invite_link}`\n\nشارك الرابط مع أصدقائك لزيادة الأرباح أو التفاعل."
+    text = (
+        "🔗 *نـظـام دعـوة الأصـدقـاء الـحـصـري*\n\n"
+        "شارك رابط الإحالة الخاص بك وأنشئ شبكتك الخاصة:\n"
+        f"`{invite_link}`\n\n"
+        "✨ كل صديق تنضم عبرك يمنحك قوة تفاعل أكبر وأرباحاً مضاعفة!"
+    )
     bot.edit_message_text(
         text,
         call.message.chat.id,
@@ -124,11 +174,13 @@ def callback_handler(call):
 )
 def download_video(message):
   if not check_subscription(message.from_user.id):
-    bot.reply_to(message, "عليك الاشتراكات أولاً لاستخدام البوت.")
+    bot.reply_to(message, "⚠️ عليك إتمام الاشتراكات الإجبارية أولاً لاستخدام البوت.")
     return
 
   url = message.text.strip()
-  msg = bot.reply_to(message, "⏳ جاري معالجة وتحميل المحتوى...")
+  msg = bot.reply_to(
+      message, "⏳ *جاري الاتصال بالسيرفر ومعالجة الفيديو باحترافية...*", parse_mode="Markdown"
+  )
 
   try:
     ydl_opts = {
@@ -148,18 +200,21 @@ def download_video(message):
     if os.path.exists(filename):
       with open(filename, "rb") as vid:
         bot.send_video(
-            message.chat.id, vid, caption="✅ تم التحميل بواسطة Ayoub Hub Bot"
+            message.chat.id,
+            vid,
+            caption="✅ *تم إنجاز التحميل بنجاح تام بواسطة Ayoub Hub*",
+            parse_mode="Markdown",
         )
       os.remove(filename)
       bot.delete_message(message.chat.id, msg.message_id)
     else:
       bot.edit_message_text(
-          "❌ حدث خطأ أثناء تحميل الفيديو.", message.chat.id, msg.message_id
+          "❌ حدث خطأ أثناء معالجة الملف.", message.chat.id, msg.message_id
       )
   except Exception as e:
     try:
       bot.edit_message_text(
-          "❌ حدث خطأ، تأكد من الرابط حاول مرة أخرى.",
+          "❌ حدث خطأ، يجدر التأكد من صحة الرابط والمحاولة لاحقاً.",
           message.chat.id,
           msg.message_id,
       )
@@ -167,5 +222,5 @@ def download_video(message):
       pass
 
 
-print("Ayoub Hub Masterpiece Edition is running perfectly...")
+print("Ayoub Hub Legendary Edition is running at full power...")
 bot.infinity_polling()
