@@ -3,7 +3,7 @@ import sqlite3
 import telebot
 from telebot import types
 
-TOKEN = "8794061789:AAGKAt9yxIdTIH-YL1IyCXbp3fX_ZplrBz4"
+TOKEN = os.getenv("BOT_TOKEN")
 bot = telebot.TeleBot(TOKEN)
 
 # الاتصال بقاعدة البيانات
@@ -220,5 +220,5 @@ def download_video(message):
       pass
 
 
-print("Ayoub Hub Legendary Edition is running at full power...")
+print("Ayoub Hub Legendary Edition is running perfectly via environment variables...")
 bot.infinity_polling()
