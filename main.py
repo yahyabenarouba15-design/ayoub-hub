@@ -1,4 +1,3 @@
-
 import os
 import sqlite3
 import telebot
@@ -26,7 +25,6 @@ def check_subscription(user_id):
 
 
 def show_main_menu(chat_id, message_id=None):
-  # تصميم الواجهة الأسطورية الفخمة
   text = (
       "🌟 *مـرحـبـاً بـك فـي عـالـم Ayoub Hub* 🌟\n\n"
       "┏━━━━ 🎯 *الـقـائـمـة الـرئـيـسـيـة* ━━━━┓\n"
@@ -35,7 +33,6 @@ def show_main_menu(chat_id, message_id=None):
       "⚡ *اختر القسم الذي ترغب بالبدء فيه من الأزرار أدناه:*"
   )
 
-  # تصميم شبكي فخم للأزرار (كل زرين في صف لترتيب بصري مذهل)
   markup = types.InlineKeyboardMarkup(row_width=2)
   btn_download = types.InlineKeyboardButton(
       "📥 تحميل فيديو", callback_data="download_menu"
@@ -93,7 +90,7 @@ def callback_handler(call):
     )
     text = (
         "📥 *قـسـم تـحـمـيـل الـفـيـديـوهـات*\n\n"
-        " أرسل أي رابط فيديو (من يوتيوب أو المنصات الأخرى) وسأقوم بتحميله لك فوراً بجودة عالية وسرعة خيالية! 🚀"
+        "أرسل أي رابط فيديو وسأقوم بتحميله لك فوراً بجودة عالية وسرعة خيالية! 🚀"
     )
     bot.edit_message_text(
         text,
@@ -158,7 +155,7 @@ def callback_handler(call):
         "🔗 *نـظـام دعـوة الأصـدقـاء الـحـصـري*\n\n"
         "شارك رابط الإحالة الخاص بك وأنشئ شبكتك الخاصة:\n"
         f"`{invite_link}`\n\n"
-        "✨ كل صديق تنضم عبرك يمنحك قوة تفاعل أكبر وأرباحاً مضاعفة!"
+        "✨ كل صديق ينضم عبرك يمنحك قوة تفاعل أكبر وأرباحاً مضاعفة!"
     )
     bot.edit_message_text(
         text,
@@ -187,7 +184,7 @@ def download_video(message):
     ydl_opts = {
         "format": "best",
         "outtmpl": "downloaded_video.%(ext)s",
-        "noplaylist": True,
+        "noplaylist": "True",
         "quiet": True,
         "extractor_args": {"youtube": {"player_client": ["android", "web"]}},
     }
