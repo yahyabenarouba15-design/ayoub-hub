@@ -3,7 +3,8 @@ import sqlite3
 import telebot
 from telebot import types
 
-TOKEN = os.getenv("BOT_TOKEN")
+# جلب التوكن وتنظيفه من أي مسافات مخفية تسبب الـ Crash
+TOKEN = "8794061789:AAGKAYL1lyCXbp3fX_ZplrE".strip()
 bot = telebot.TeleBot(TOKEN)
 
 # إعداد قاعدة البيانات
