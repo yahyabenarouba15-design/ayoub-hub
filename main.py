@@ -4,8 +4,7 @@ import sqlite3
 import os
 import requests
 
-# إعدادات البوت الأساسية
-TOKEN = "8300263150:AAHSyZ060lW90rX0l5I8X8YJ7X8Z5X8YJ7X"
+TOKEN = "8794061789:AAGKAt9yxIdTIH-YL1IyCXbp3fX_ZplrBz4"
 bot = telebot.TeleBot(TOKEN)
 
 # الاتصال بقاعدة البيانات
@@ -21,7 +20,6 @@ cursor.execute('''
 conn.commit()
 
 def check_subscription(user_id):
-    # دالة التحقق من الاشتراكات إن وجدت
     return True
 
 def show_main_menu(chat_id):
@@ -56,7 +54,7 @@ def callback_handler(call):
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton('⬅️ القائمة الرئيسية', callback_data='main_menu'))
         
-        text = f"مرحباً بك في قسم دعوة الأصدقاء!\n\n`{invite_link}`\n\nشارك الرابط مع أصدقائك لزيادة الأرباح أو التفاعل."
+        text = f"مرحباً بك في قسم دعوة الأصدقاء!\n\n`{invite_link}`\n\nشارك الرابط مع أصدقائك."
         bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup, parse_mode='Markdown')
 
 @bot.message_handler(func=lambda message: message.text and ('http://' in message.text or 'https://' in message.text))
