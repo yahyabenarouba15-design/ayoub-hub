@@ -3,11 +3,9 @@ import sqlite3
 import telebot
 from telebot import types
 
-# التوكن الإمبراطوري الجديد والمدمج بدقة لضمان الاستقرار التام
 TOKEN = "8794061789:AAFoKPLjK287aHjSECDQ5Rc9cHFICsCwfhk".strip()
 bot = telebot.TeleBot(TOKEN)
 
-# إعداد قاعدة البيانات الإمبراطورية
 conn = sqlite3.connect("users.db", check_same_thread=False)
 cursor = conn.cursor()
 cursor.execute(
@@ -262,5 +260,5 @@ def download_video(message: types.Message):
     )
 
 
-print("Ayoub Hub Empire Bot is running smoothly...")
+print("Bot is running perfectly...")
 bot.infinity_polling(skip_pending=True)
