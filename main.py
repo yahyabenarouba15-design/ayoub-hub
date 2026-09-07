@@ -3,8 +3,8 @@ import sqlite3
 import telebot
 from telebot import types
 
-# التوكن مدمج مباشرة وثابت لضمان عمل كافة المزايا بدون نقصان
-TOKEN = "8794061789:AAFoKPLjK287aHjSECDQ5Rc9cHFICsCwfhk".strip()
+# التوكن الجديد والنظيف مدمج هنا مباشرة لضمان العمل 100% وبدون أخطاء
+TOKEN = "8794061789:AAGK25uSLWeIOz5dFaYhu2ZG0LWZXLn0vbw".strip()
 bot = telebot.TeleBot(TOKEN)
 
 conn = sqlite3.connect("users.db", check_same_thread=False)
