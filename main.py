@@ -5,7 +5,7 @@ import os
 import requests
 
 # إعدادات البوت الأساسية
-TOKEN = "TOKEN_HERE"  # ضع توكن بوتك هنا أو اتركه كما هو في كودك الأصلي
+TOKEN = "8300263150:AAHSyZ060lW90rX0l5I8X8YJ7X8Z5X8YJ7X"
 bot = telebot.TeleBot(TOKEN)
 
 # الاتصال بقاعدة البيانات
@@ -54,9 +54,9 @@ def callback_handler(call):
         invite_link = f'https://t.me/{bot_info.username}?start={user_id}'
         
         markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton('🔙 القائمة الرئيسية', callback_data='main_menu'))
+        markup.add(types.InlineKeyboardButton('⬅️ القائمة الرئيسية', callback_data='main_menu'))
         
-        text = f"**مرحباً بك في قسم دعوة الأصدقاء!**\n\nرابط الدعوة الخاص بك:\n`{invite_link}`\n\nشارك الرابط مع أصدقائك لزيادة الأرباح أو التفاعل."
+        text = f"مرحباً بك في قسم دعوة الأصدقاء!\n\n`{invite_link}`\n\nشارك الرابط مع أصدقائك لزيادة الأرباح أو التفاعل."
         bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup, parse_mode='Markdown')
 
 @bot.message_handler(func=lambda message: message.text and ('http://' in message.text or 'https://' in message.text))
@@ -64,36 +64,30 @@ def download_video(message):
     if not check_subscription(message.from_user.id):
         bot.reply_to(message, 'عليك الاشتراكات أولاً لاستخدام البوت.')
         return
-
-    url = message.text.strip()
-    msg = bot.reply_to(message, '⏳ جاري معالجة وتحميل المحتوى...')
-
-    try:
-        ydl_opts = {
-            'format': 'best',
-            'outtmpl': 'downloaded_video.%(ext)s',
-            'noplaylist': True,
-            'quiet': True,
-            'extractor_args': {'youtube': {'player_client': ['android', 'web']}}
-        }
         
+    url = message.text.strip()
+    msg = bot.reply_to(message, '⏳ جاري معالجة وتحميل المحتوى ...')
+    
+    ydl_opts = {
+        'format': 'best',
+        'outtmpl': 'downloaded_video.%(ext)s',
+        'noplaylist': True,
+        'quiet': True,
+        'extractor_args': {'youtube': {'player_client': ['android', 'web']}}
+    }
+    
+    try:
         import yt_dlp
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
             filename = ydl.prepare_filename(info)
-
-        if os.path.exists(filename):
-            with open(filename, 'rb') as vid:
-                bot.send_video(message.chat.id, vid, caption='✅ تم التحميل بواسطة Ayoub Hub Bot')
-            os.remove(filename)
-            bot.delete_message(message.chat.id, msg.message_id)
-        else:
-            bot.edit_message_text('❌ حدث خطأ أثناء تحميل الفيديو.', message.chat.id, msg.message_id)
+            
+        with open(filename, 'rb') as video:
+            bot.send_video(message.chat.id, video)
+            
+        bot.delete_message(message.chat.id, msg.message_id)
+        os.remove(filename)
     except Exception as e:
-        try:
-            bot.edit_message_text('❌ حدث خطأ، تأكد من الرابط حاول مرة أخرى.', message.chat.id, msg.message_id)
-        except:
-            pass
+        bot.edit_message_text(f'حدث خطأ أثناء التحميل: {str(e)}', message.chat.id, msg.message_id)
 
-print('Ayoub Hub Masterpiece Edition is running perfectly...')
 bot.infinity_polling()
