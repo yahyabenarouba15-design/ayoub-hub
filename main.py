@@ -3,6 +3,7 @@ import sqlite3
 import telebot
 from telebot import types
 
+# التوكن مدمج مباشرة وثابت لضمان عمل كافة المزايا بدون نقصان
 TOKEN = "8794061789:AAFoKPLjK287aHjSECDQ5Rc9cHFICsCwfhk".strip()
 bot = telebot.TeleBot(TOKEN)
 
