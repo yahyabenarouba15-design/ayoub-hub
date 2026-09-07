@@ -3,13 +3,9 @@ import sqlite3
 import telebot
 from telebot import types
 
-# قراءة التوكن مباشرة من متغيرات البيئة في Railway (BOT_TOKEN)
-TOKEN = os.getenv("BOT_TOKEN")
-
-if not TOKEN:
-  raise ValueError("❌ خطأ: لم يتم العثور على متغير البيئة BOT_TOKEN في Railway!")
-
-bot = telebot.TeleBot(TOKEN.strip())
+# التوكن الصحيح مباشرة داخل الكود لتجنب مشاكل المتغيرات
+TOKEN = "8794061789:AAGK25uSLWeIOz5dFaYhu2ZG0LWZXLn0vbw".strip()
+bot = telebot.TeleBot(TOKEN)
 
 conn = sqlite3.connect("users.db", check_same_thread=False)
 cursor = conn.cursor()
