@@ -3,15 +3,12 @@ import sqlite3
 import telebot
 from telebot import types
 
-# إعدادات البوت الأساسية مع التوكن المباشر
 TOKEN = "8794061789:AAGKAt9yxIdTIH-YL1IyCXbp3fX_ZplrBz4"
 bot = telebot.TeleBot(TOKEN)
 
-# الاتصال بقاعدة البيانات
 conn = sqlite3.connect("users.db", check_same_thread=False)
 cursor = conn.cursor()
 
-# إنشاء الجدول إن لم يكن موجوداً
 cursor.execute(
     """
     CREATE TABLE IF NOT EXISTS users (
@@ -23,7 +20,6 @@ conn.commit()
 
 
 def check_subscription(user_id):
-  # دالة التحقق من الاشتراكات إن وجدت
   return True
 
 
