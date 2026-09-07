@@ -3,11 +3,11 @@ import sqlite3
 import telebot
 from telebot import types
 
-# جلب التوكن وتنظيفه من أي مسافات مخفية تسبب الـ Crash
-TOKEN = "8794061789:AAGKAYL1lyCXbp3fX_ZplrE".strip()
+# التوكن الإمبراطوري الجديد والمدمج بدقة لضمان الاستقرار التام
+TOKEN = "8794061789:AAFoKPLjK287aHjSECDQ5Rc9cHFICsCwfhk".strip()
 bot = telebot.TeleBot(TOKEN)
 
-# إعداد قاعدة البيانات
+# إعداد قاعدة البيانات الإمبراطورية
 conn = sqlite3.connect("users.db", check_same_thread=False)
 cursor = conn.cursor()
 cursor.execute(
@@ -230,7 +230,7 @@ def callback_handler(call):
     func=lambda message: message.text
     and ("http://" in message.text or "https://" in message.text)
 )
-def download_video(message):
+def download_video(message: types.Message):
   url = message.text.strip()
   msg = bot.reply_to(message, "⚡ *جاري معالجة الرابط...*", parse_mode="Markdown")
 
@@ -262,5 +262,5 @@ def download_video(message):
     )
 
 
-print("Bot is running stable...")
-bot.infinity_polling()
+print("Ayoub Hub Empire Bot is running smoothly...")
+bot.infinity_polling(skip_pending=True)
